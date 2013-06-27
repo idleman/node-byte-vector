@@ -4,12 +4,12 @@ node-byte-vector
 ByteVector for node.js. Perfect for binary data. Usage:
 
     var ByteVector = requite('bytevector'),
-        vector = new ByteVector([1, 2, 3, 4, 5]); //our vector
+        vector = new ByteVector([1, 2, 3, 4, 5]); // Our vector
 
-    vector.push_back(6); //finsert 6 in the end
-    vector.pop_front(); 
+    vector.push_back(6); // Insert 6 in the end
+    vector.pop_front(); // Remove first value (1).
  
-    var copy = new ByteVector(vector); //[2, 3, 4, 5, 6]
+    var copy = new ByteVector(vector); // [2, 3, 4, 5, 6]
   
 
 ##Features:
