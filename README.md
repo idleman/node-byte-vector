@@ -3,15 +3,13 @@ node-byte-vector
 
 ByteVector for node.js. Perfect for binary data. Usage:
 
+    var ByteVector = requite('bytevector'),
+        vector = new ByteVector([1, 2, 3, 4, 5]); //our vector
 
-  var ByteVector = requite('bytevector');
-
-  var vector = new ByteVector([1, 2, 3, 4, 5]);
-
-  vector.push_back(6); //finsert 6 in the end
-  vector.pop_front();
-  
-  var copy = new ByteVector(vector); //[2, 3, 4, 5, 6]
+    vector.push_back(6); //finsert 6 in the end
+    vector.pop_front(); 
+ 
+    var copy = new ByteVector(vector); //[2, 3, 4, 5, 6]
   
 
 ##Features:
@@ -54,6 +52,10 @@ ByteVector for node.js. Perfect for binary data. Usage:
 
 ###.resize(Uint32)
   Resize vector size to [Uint32] elements.
+
+###.assign(obj, offset?, length?)
+  Assign this vector using the elements in [obj]. Obj can either be a instance of
+  ByteVector or an object that implements obj.length and obj[N].
 
 ###.push_back(Uint8)
   Insert [Uint8] in the back of the vector.
