@@ -1,7 +1,7 @@
 {
   "name": "bytevector",
-  "version": "0.0.1",
-  "description": "ByteVector allows you to handling binary data in an array like fashion.",
+  "version": "1.0.0",
+  "description": "ByteVector - Space effcient vector for binary data.",
   "main": "index.js",
   "scripts": {
     "test": "mocha test.js"
@@ -15,6 +15,9 @@
     "byte",
     "vector"
   ],
+  "devDependencies": {
+    "mocha": "*"
+  },
   "author": "Fredrik <evoozer@gmail.com>",
   "license": "BSD",
   "bugs": {
