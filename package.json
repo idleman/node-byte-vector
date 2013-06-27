@@ -1,6 +1,6 @@
 {
   "name": "bytevector",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ByteVector - Space effcient vector for binary data.",
   "main": "index.js",
   "scripts": {
