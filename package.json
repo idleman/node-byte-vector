@@ -1,0 +1,23 @@
+{
+  "name": "bytevector",
+  "version": "0.0.1",
+  "description": "ByteVector allows you to handling binary data in an array like fashion.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/idleman/node-byte-vector.git"
+  },
+  "keywords": [
+    "ByteVector",
+    "byte",
+    "vector"
+  ],
+  "author": "Fredrik <evoozer@gmail.com>",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/idleman/node-byte-vector/issues"
+  }
+}
