@@ -139,6 +139,9 @@ module.exports = (function () {
       this._buffer = new Uint8Array(1);
       this._offset = 0;
       this._size = 0;
+    },
+    serialize: function () {
+      return this._buffer;
     }
   };
 

@@ -29,8 +29,12 @@ ByteVector for node.js. Perfect for binary data. Usage:
 ###Constructor(array, offset):
   Construct a vector from [array] range: [offset, to_array_end).
 
-###Constructor(array, offset, length):
-  Construct a vector from [array] range: [offset, offset+length).
+###Constructor(Uint8Array): (Not implemented yet)
+  Construct the vector from the Uint8Array. It will assume the array has
+  previusly been constrcted with .serialize().
+
+###.serialize() Not implemented yet.
+  Returns the underlying Uint8Array buffer.
 
 ###.front()
   Returns the first element in the vector.
@@ -86,3 +90,6 @@ ByteVector for node.js. Perfect for binary data. Usage:
 
 ###.length = N
   Resize vector to [N] elements.
+
+###.rawBuffer()
+  Returns a reference to the underlying buffer.

@@ -77,7 +77,9 @@ describe('ByteVector', function () {
       vector.clear();
       assert.equal(vector.size(), 0);
     });
-
+    it('#rawBuffer()', function () {
+      assert.equal(typeof vector.rawBuffer, 'function');
+    });
     var shouldImplement = [
         'front',
         'back',
@@ -91,7 +93,9 @@ describe('ByteVector', function () {
         'pop_back',
         'pop_front',
         'get',
-        'set'
+        'set',
+        'serialize',
+        'clear'
     ];
     shouldImplement.forEach(function (method) {
       it('should implement method: ' + method, function () {
