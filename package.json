@@ -4,7 +4,8 @@
   "description": "ByteVector allows you to handling binary data in an array like fashion.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test.js"
+    "test": "mocha test.js",
+		"benchmark": "node benchmark.js"
   },
   "repository": {
     "type": "git",

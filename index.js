@@ -105,11 +105,10 @@ module.exports = (function () {
       return this._reserve(N, 0, true);
     },
     push_back: function (uint8) {
-      if (this.capacity() === this.size()) {
+      if (this._buffer.length === this._size) { //this.capacity() === this.size()) {
         this.reserve(this.capacity() * 2);
       }
-      var pos = this._offset + this._size++;
-      this._buffer[pos] = uint8 & 0xFF;
+      this._buffer[this._offset + this._size++] = uint8;
     },
 
     push_front: function (uint8) {
@@ -145,6 +144,7 @@ module.exports = (function () {
         cb(this.get(i), i, this);
       }
     }
+
   };
 
   return ByteVector;
