@@ -29,7 +29,7 @@ module.exports = (function () {
 
     if(obj) {
       if (typeof obj === 'number') {
-        this._buffer = new Uint8Array(1);
+        this._buffer = new Uint8Array(obj);
       } else {;
         this._buffer = new Uint8Array(obj.length);
         this.assign(obj, offset, length);
@@ -63,7 +63,6 @@ module.exports = (function () {
       return this._buffer[this._offset];
     },
     back: function () {
-      
       return this._buffer[this._offset + this._size - 1];
     },
     push: function (uint8) {
@@ -140,8 +139,11 @@ module.exports = (function () {
       this._offset = 0;
       this._size = 0;
     },
-    serialize: function () {
-      return this._buffer;
+
+    forEach: function (cb) {
+      for (var i = 0, len = this._size; i < len; ++i) {
+        cb(this.get(i), i, this);
+      }
     }
   };
 

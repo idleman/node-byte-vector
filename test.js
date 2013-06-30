@@ -73,13 +73,20 @@ describe('ByteVector', function () {
       }
     });
 
+    it('#forEach', function () {
+      var counter = 0;
+      vector.forEach(function(value, index, array) {
+        assert.equal(vector, array);
+        assert.equal(value, vector.get(counter));
+        assert(counter++, index);
+      });
+      assert.equal(counter, vector.length);
+    });
     it('#clear', function () {
       vector.clear();
       assert.equal(vector.size(), 0);
     });
-    it('#rawBuffer()', function () {
-      assert.equal(typeof vector.rawBuffer, 'function');
-    });
+
     var shouldImplement = [
         'front',
         'back',
@@ -94,7 +101,6 @@ describe('ByteVector', function () {
         'pop_front',
         'get',
         'set',
-        'serialize',
         'clear'
     ];
     shouldImplement.forEach(function (method) {
