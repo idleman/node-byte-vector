@@ -10,6 +10,9 @@ module.exports = (function () {
     }
   }
 
+  /**
+  * [size(4) + offset(4)]
+  */
   function ByteVector(obj, offset, length) {
     var self = this;
 
@@ -29,7 +32,7 @@ module.exports = (function () {
 
     if(obj) {
       if (typeof obj === 'number') {
-        this._buffer = new Uint8Array(1);
+        this._buffer = new Uint8Array(obj);
       } else {;
         this._buffer = new Uint8Array(obj.length);
         this.assign(obj, offset, length);
@@ -46,25 +49,43 @@ module.exports = (function () {
   }
 
   ByteVector.prototype = {
-
+    _getSize: function () {
+      return this._size;
+    },
+    _setSize: function (N) {
+      this._size = N;
+    },
+    _getBuffer: function () {
+      return this._buffer;
+    },
+    _setBuffer: function (val) {
+      this._buffer = val;
+    },
+    _getOffset: function () {
+      return this._offset;
+    },
+    _setOffset: function (val) {
+      this._offset = val;
+    },
     _reserve: function (N, offset, cp) {
       var size = N + offset;
       if (this.capacity() < size) {
         var buf = new Uint8Array(size);
 
         if(cp) {
-          copy(this._buffer, buf, offset);
+          copy(this._getBuffer(), buf, offset);
         }
-        this._buffer = buf;
-        this._offset = offset;
+        this._setBuffer(buf);
+        this._setOffset(offset);
       }
     },
-    front: function() {
-      return this._buffer[this._offset];
+    front: function () {
+      var buffer = this._getBuffer();
+      return buffer[this._getOffset()];
     },
     back: function () {
-      
-      return this._buffer[this._offset + this._size - 1];
+      var buffer = this._getBuffer();
+      return buffer[this._getOffset() + this._getSize() - 1];
     },
     push: function (uint8) {
       return this.push_back(uint8);
@@ -76,31 +97,36 @@ module.exports = (function () {
       return this._buffer.length;
     },
     size: function () {
-      return this._size;
+      return this._getSize();
     },
     resize: function (N) {
       if (this.capacity() < N) {
-        this._reserve(N, this._offset);
-      } 
-      this._size = N;
+        this._reserve(N, this._getOffset());
+      }
+      this._setSize(N);
     },
     assign: function(src, offset, length) {
       var offset = offset || 0,
           length = length || (src.length-offset),
-          size = offset + length;
+          size = offset + length,
+          buffer = this._getBuffer();
 
       this._reserve(size, 0, false);
       if (src instanceof ByteVector) {
+
+        var src_buffer = src._getBuffer(),
+            src_offset = src._getOffset() + offset;
+
         for (; --length >= 0;) {
-          this._buffer[length] = src._buffer[src._offset + length + offset];
+          buffer[length] = src_buffer[src_offset + length];
         }
       } else {
         for (; --length >= 0;) {
-          this._buffer[length] = src[length + offset];
+          buffer[length] = src[length + offset];
         }
       }
-      this._size = size;
-      this._offset = 0;
+      this._setSize(size);
+      this._setOffset(0);
     },
     reserve: function(N) {
       return this._reserve(N, 0, true);
@@ -109,36 +135,61 @@ module.exports = (function () {
       if (this.capacity() === this.size()) {
         this.reserve(this.capacity() * 2);
       }
-      var pos = this._offset + this._size++;
-      this._buffer[pos] = uint8 & 0xFF;
+      var buffer = this._getBuffer(),
+          size = this._getSize(),
+          pos = this._getOffset() + size;
+
+      buffer[pos] = uint8;
+      this._setSize(++size);
     },
 
     push_front: function (uint8) {
-      if (0 === this._offset) {
+      
+      if (0 === this._getOffset()) {
         this._reserve(this.capacity() * 2, 1, true);
       }
-      this._buffer[--this._offset] = uint8;
-      ++this._size;
+      var offset = this._getOffset(),
+          size = this._getSize(),
+          buffer = this._getBuffer();
+
+      buffer[--offset] = uint8;
+      ++size;
+      this._setOffset(offset);
+      this._setSize(size);
     },
     pop_front: function () {
-      ++this._offset;
-      --this._size;
-      return this._buffer[this._offset - 1];
+      var offset = this._getOffset(),
+          buffer = this._getBuffer();
+
+      this._setOffset(offset + 1);
+      this._setSize(this._getSize() - 1);
+
+      return buffer[offset];
     },
     pop_back: function () {
-      --this._size;
-      return this._buffer[this._offset + this._size];
+      var size = this._getSize(),
+          offset = this._getOffset(),
+          buffer = this._getBuffer();
+
+      this._setSize(--size);
+      return buffer[offset + size];
     },
     get: function (pos) {
-      return this._buffer[this._offset + pos];
+      var buffer = this._getBuffer(),
+          offset = this._getOffset();
+
+      return buffer[offset + pos];
     },
     set: function (pos, val) {
-      this._buffer[this._offset + pos] = val;
+      var buffer = this._getBuffer(),
+          offset = this._getOffset();
+
+      buffer[offset + pos] = val;
     },
     clear: function () {
-      this._buffer = new Uint8Array(1);
-      this._offset = 0;
-      this._size = 0;
+      this._setBuffer(new Uint8Array(1));
+      this._setOffset(0);
+      this._setSize(0);
     },
     serialize: function () {
       return this._buffer;
