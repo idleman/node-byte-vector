@@ -106,6 +106,7 @@ module.exports = (function () {
     },
     push_back: function (uint8) {
       if (this._buffer.length === this._size) { //this.capacity() === this.size()) {
+        //process.stdout.write('*');
         this.reserve(this.capacity() * 2);
       }
       this._buffer[this._offset + this._size++] = uint8;
@@ -143,6 +144,20 @@ module.exports = (function () {
       for (var i = 0, len = this._size; i < len; ++i) {
         cb(this.get(i), i, this);
       }
+    },
+
+    shrink_to_fit: function () {
+      var size = this.size(),
+          buf = new Uint8Array(size);
+
+      for (; --size >= 0;) {
+       buf[size] = this._buffer[this._offset + size];
+      }
+      this._buffer = buf;
+      this._offset = 0;
+    },
+    buffer: function () {
+      return this._buffer;
     }
 
   };

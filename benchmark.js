@@ -8,6 +8,16 @@ var vector = ByteVector();
 
 var tests = [
   {
+    name: "warm up",
+    prepare: function (testcount) {
+      return new ByteVector();
+    },
+    handler: function (vector) {
+      vector.push_back(2);
+      vector.pop_back();
+    }
+  },
+  {
     name: "push_back",
     prepare: function(testcount) {
       return new ByteVector();
@@ -19,7 +29,9 @@ var tests = [
   {
     name: "push_back with reserve",
     prepare: function (testcount) {
-      return new ByteVector(testcount);
+      var vector = new ByteVector();
+      vector.reserve(testcount);
+      return vector;
     },
     handler: function (vector) {
       vector.push_back(2);
@@ -59,7 +71,7 @@ tests.forEach(function (test) {
   process.stdout.write('\nRunning test: "' + test.name + '"...');
 
   var avgOperationsPerMS = [];
-  for (var i = 0, len = 100; i < len; ++i) {
+  for (var i = 0, len = 10; i < len; ++i) {
     var counter = NumberOfTests,
         vector = test.prepare(NumberOfTests),
         handler = test.handler,
@@ -80,5 +92,5 @@ tests.forEach(function (test) {
     total += opms;
   });
   var avg = total/avgOperationsPerMS.length;
-  process.stdout.write('\n\t' + avg + '/ms');
+  process.stdout.write('\n\t' + parseInt(avg*1000) + '/s');
 });
