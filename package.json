@@ -4,7 +4,8 @@
   "description": "ByteVector - Space effcient vector for binary data.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test.js"
+    "test": "mocha test.js",
+		"benchmark": "node benchmark.js"
   },
   "repository": {
     "type": "git",

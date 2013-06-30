@@ -29,7 +29,7 @@ module.exports = (function () {
 
     if(obj) {
       if (typeof obj === 'number') {
-        this._buffer = new Uint8Array(1);
+        this._buffer = new Uint8Array(obj);
       } else {;
         this._buffer = new Uint8Array(obj.length);
         this.assign(obj, offset, length);
@@ -63,7 +63,6 @@ module.exports = (function () {
       return this._buffer[this._offset];
     },
     back: function () {
-      
       return this._buffer[this._offset + this._size - 1];
     },
     push: function (uint8) {
@@ -106,11 +105,11 @@ module.exports = (function () {
       return this._reserve(N, 0, true);
     },
     push_back: function (uint8) {
-      if (this.capacity() === this.size()) {
+      if (this._buffer.length === this._size) { //this.capacity() === this.size()) {
+        //process.stdout.write('*');
         this.reserve(this.capacity() * 2);
       }
-      var pos = this._offset + this._size++;
-      this._buffer[pos] = uint8 & 0xFF;
+      this._buffer[this._offset + this._size++] = uint8;
     },
 
     push_front: function (uint8) {
@@ -139,7 +138,28 @@ module.exports = (function () {
       this._buffer = new Uint8Array(1);
       this._offset = 0;
       this._size = 0;
+    },
+
+    forEach: function (cb) {
+      for (var i = 0, len = this._size; i < len; ++i) {
+        cb(this.get(i), i, this);
+      }
+    },
+
+    shrink_to_fit: function () {
+      var size = this.size(),
+          buf = new Uint8Array(size);
+
+      for (; --size >= 0;) {
+       buf[size] = this._buffer[this._offset + size];
+      }
+      this._buffer = buf;
+      this._offset = 0;
+    },
+    buffer: function () {
+      return this._buffer;
     }
+
   };
 
   return ByteVector;

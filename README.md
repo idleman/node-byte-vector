@@ -1,12 +1,14 @@
 node-byte-vector
 ================
 
-ByteVector for node.js. Perfect for binary data. Usage:
+ByteVector for node.js. Perfect for binary data.
+
+Usage:
 
     var ByteVector = requite('bytevector'),
         vector = new ByteVector([1, 2, 3, 4, 5]); // Our vector
 
-    vector.push_back(6); // Insert 6 in the end
+    vector.push_back(6); // Insert binary value '6' in the end
     vector.pop_front(); // Remove first value (1).
  
     var copy = new ByteVector(vector); // [2, 3, 4, 5, 6]
@@ -14,8 +16,11 @@ ByteVector for node.js. Perfect for binary data. Usage:
 
 ##Features:
 
-- Space effcient.
-- Performance wise.
+- Space effcient. Each element will only use 8 bits memory.
+- Performance wise. It is so fast it can principle be.
+
+##Good to know
+All values are saved in a Uint8Array instance which only accepts integer values between 0-255. I
 
 
 ##Methods
@@ -29,8 +34,12 @@ ByteVector for node.js. Perfect for binary data. Usage:
 ###Constructor(array, offset):
   Construct a vector from [array] range: [offset, to_array_end).
 
-###Constructor(array, offset, length):
-  Construct a vector from [array] range: [offset, offset+length).
+###Constructor(Uint8Array): (Not implemented yet)
+  Construct the vector from the Uint8Array. It will assume the array has
+  previusly been constrcted with .serialize().
+
+###.serialize() Not implemented yet.
+  Returns the underlying Uint8Array buffer.
 
 ###.front()
   Returns the first element in the vector.
@@ -86,3 +95,6 @@ ByteVector for node.js. Perfect for binary data. Usage:
 
 ###.length = N
   Resize vector to [N] elements.
+
+###.rawBuffer()
+  Returns a reference to the underlying buffer.

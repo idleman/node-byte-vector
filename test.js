@@ -73,11 +73,34 @@ describe('ByteVector', function () {
       }
     });
 
+    it('#forEach', function () {
+      var counter = 0;
+      vector.forEach(function(value, index, array) {
+        assert.equal(vector, array);
+        assert.equal(value, vector.get(counter));
+        assert(counter++, index);
+      });
+      assert.equal(counter, vector.length);
+    });
+
     it('#clear', function () {
       vector.clear();
       assert.equal(vector.size(), 0);
     });
-
+    it('#shrink_to_fit', function () {
+      vector.push_back(1);
+      vector.push_back(2);
+      vector.push_back(3);
+      vector.pop_back();
+      vector.shrink_to_fit();
+      assert.equal(vector.size(), vector.capacity());
+      assert.equal(vector.get(0), 1);
+      assert.equal(vector.get(1), 2);
+    });
+    it('#buffer', function () {
+      var buf = vector.buffer();
+      assert.equal(buf instanceof Uint8Array, true);
+    });
     var shouldImplement = [
         'front',
         'back',
@@ -91,7 +114,10 @@ describe('ByteVector', function () {
         'pop_back',
         'pop_front',
         'get',
-        'set'
+        'set',
+        'clear',
+        'buffer',
+        'shrink_to_fit'
     ];
     shouldImplement.forEach(function (method) {
       it('should implement method: ' + method, function () {
