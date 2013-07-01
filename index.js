@@ -78,7 +78,7 @@ module.exports = (function () {
       return this._size;
     },
     resize: function (N) {
-      if (this.capacity() < N) {
+      if(this.size() != N) {
         this._reserve(N, this._offset);
       } 
       this._size = N;
